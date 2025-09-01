@@ -55,6 +55,8 @@ export default function UserDashboard() {
   const [editingBusiness, setEditingBusiness] = React.useState(null);
   const [bookmarkedBusinesses, setBookmarkedBusinesses] = React.useState([]);
   const [loadingBookmarks, setLoadingBookmarks] = React.useState(false);
+  const [businessCount, setBusinessCount] = React.useState(0);
+  const [bookmarkCount, setBookmarkCount] = React.useState(0);
 
   const fetchUserBusinesses = async () => {
     if (!user?.id) return;
@@ -73,12 +75,47 @@ export default function UserDashboard() {
       }
       
       setUserBusinesses(data || []);
+      setBusinessCount(data?.length || 0);
     } catch (error) {
       console.error('Error:', error);
     } finally {
       setLoadingBusinesses(false);
     }
   };
+
+  const fetchDashboardCounts = async () => {
+    if (!user?.id) return;
+    
+    try {
+      // Fetch business count
+      const { data: businessData, error: businessError } = await supabase
+        .from('businesses')
+        .select('id')
+        .eq('owner_id', user.id);
+      
+      if (!businessError) {
+        setBusinessCount(businessData?.length || 0);
+      }
+
+      // Fetch bookmark count
+      const { data: bookmarkData, error: bookmarkError } = await supabase
+        .from('bookmarks')
+        .select('id')
+        .eq('user_id', user.id);
+      
+      if (!bookmarkError) {
+        setBookmarkCount(bookmarkData?.length || 0);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard counts:', error);
+    }
+  };
+
+  React.useEffect(() => {
+    if (user?.id) {
+      fetchDashboardCounts();
+    }
+  }, [user?.id]);
 
   const fetchBookmarkedBusinesses = async () => {
     console.log('fetchBookmarkedBusinesses called, user ID:', user?.id);
@@ -463,7 +500,7 @@ export default function UserDashboard() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold">0</p>
+                  <p className="text-2xl font-bold">{businessCount}</p>
                   <p className="text-sm text-muted-foreground">Active listings</p>
                 </CardContent>
               </Card>
@@ -472,11 +509,11 @@ export default function UserDashboard() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Heart className="h-5 w-5" />
-                    Wishlists
+                    Saved
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold">0</p>
+                  <p className="text-2xl font-bold">{bookmarkCount}</p>
                   <p className="text-sm text-muted-foreground">Saved businesses</p>
                 </CardContent>
               </Card>
