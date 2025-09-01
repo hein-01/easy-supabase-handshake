@@ -94,7 +94,6 @@ export default function UserDashboard() {
         .from('bookmarks')
         .select(`
           id,
-          created_at,
           businesses (
             id,
             name,
@@ -115,8 +114,7 @@ export default function UserDashboard() {
             phone
           )
         `)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+        .eq('user_id', user.id);
       
       console.log('Bookmarks query result:', { data, error });
       
@@ -151,8 +149,7 @@ export default function UserDashboard() {
           facebook_page: business.facebook_page,
           tiktok_url: business.tiktok_url,
           phone: business.phone,
-          bookmarkId: bookmark.id,
-          bookmarkedAt: bookmark.created_at
+          bookmarkId: bookmark.id
         };
       }).filter(Boolean) || [];
       
@@ -277,16 +274,13 @@ export default function UserDashboard() {
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {bookmarkedBusinesses.map((business) => (
                   <div key={business.id} className="relative">
-                    <div className="absolute top-2 left-2 z-40 flex items-center gap-2">
-                      <div className="bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-medium">
-                        Saved {new Date(business.bookmarkedAt).toLocaleDateString()}
-                      </div>
+                    <div className="absolute top-2 right-2 z-40">
                       <Button
                         onClick={() => handleDeleteBookmark(business.bookmarkId)}
                         size="sm"
                         className="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-2 py-1 h-auto text-xs rounded"
                       >
-                        Delete
+                        Unsave
                       </Button>
                     </div>
                     <PopularBusinessCard business={business} />
