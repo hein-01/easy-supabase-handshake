@@ -98,8 +98,9 @@ export const Navbar = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <ChevronDown className="h-4 w-4" />
+                  <Button variant="default" size="sm" className="flex items-center space-x-1">
+                    <span>Dashboard</span>
+                    <ChevronDown className="h-3 w-3" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
