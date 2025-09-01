@@ -274,7 +274,7 @@ export default function UserDashboard() {
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {bookmarkedBusinesses.map((business) => (
                   <div key={business.id} className="relative">
-                    <div className="absolute top-2 right-2 z-40">
+                    <div className="absolute top-2 right-12 z-40">
                       <Button
                         onClick={() => handleDeleteBookmark(business.bookmarkId)}
                         size="sm"
