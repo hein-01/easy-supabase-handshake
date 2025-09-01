@@ -146,13 +146,7 @@ export const Navbar = () => {
                   <Link
                     to="/find-shops"
                     className="text-lg font-medium text-foreground hover:text-primary"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsMobileMenuOpen(false);
-                      setTimeout(() => {
-                        window.location.href = '/find-shops';
-                      }, 300);
-                    }}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     🏪 Find Shops
                   </Link>
@@ -165,16 +159,7 @@ export const Navbar = () => {
                     
                     <div className="relative">
                       <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                        <Link 
-                          to="/list-&-get-pos-website" 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setIsMobileMenuOpen(false);
-                            setTimeout(() => {
-                              window.location.href = '/list-&-get-pos-website';
-                            }, 300);
-                          }}
-                        >
+                        <Link to="/list-&-get-pos-website" onClick={() => setIsMobileMenuOpen(false)}>
                           Get Online Shop Website + POS
                         </Link>
                       </Button>
