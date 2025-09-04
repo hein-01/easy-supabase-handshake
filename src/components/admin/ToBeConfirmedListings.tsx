@@ -39,23 +39,7 @@ export default function ToBeConfirmedListings() {
     try {
       console.log('Fetching pending listings...');
       const { data, error } = await supabase
-        .from('businesses')
-        .select(`
-          id,
-          name,
-          owner_id,
-          user_email,
-          receipt_url,
-          payment_status,
-          created_at,
-          listing_expired_date,
-          last_payment_date,
-          odoo_expired_date,
-          "POS+Website"
-        `)
-        .eq('payment_status', 'to_be_confirmed')
-        .not('receipt_url', 'is', null)
-        .order('created_at', { ascending: false });
+        .rpc('get_pending_businesses_with_emails');
 
       if (error) {
         console.error('Error fetching listings:', error);
@@ -64,14 +48,6 @@ export default function ToBeConfirmedListings() {
       
       console.log('Raw database result:', data);
       console.log('Number of listings found:', data?.length || 0);
-      
-      // Additional debug - let's also check what payment statuses exist
-      const { data: allBusinesses } = await supabase
-        .from('businesses')
-        .select('id, name, payment_status')
-        .not('receipt_url', 'is', null);
-      
-      console.log('All businesses with receipts:', allBusinesses);
       
       setListings(data || []);
     } catch (error) {

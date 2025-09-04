@@ -303,10 +303,13 @@ export type Database = {
         Returns: {
           created_at: string
           id: string
+          last_payment_date: string
           listing_expired_date: string
           name: string
+          odoo_expired_date: string
           owner_id: string
           payment_status: string
+          "POS+Website": number
           receipt_url: string
           user_email: string
         }[]
