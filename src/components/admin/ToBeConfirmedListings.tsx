@@ -66,53 +66,27 @@ export default function ToBeConfirmedListings() {
     try {
       console.log('Starting payment confirmation for business:', businessId);
       
-      // Get business details first to calculate dates
-      const { data: business, error: fetchError } = await supabase
-        .from('businesses')
-        .select('"POS+Website"')
-        .eq('id', businessId)
-        .single();
-
-      if (fetchError) {
-        console.error('Error fetching business details:', fetchError);
-        throw fetchError;
+      // Get business details first to get POS+Website value
+      const business = listings.find(listing => listing.id === businessId);
+      if (!business) {
+        throw new Error('Business not found in current listings');
       }
 
-      console.log('Business details fetched:', business);
+      console.log('Business details:', business);
 
-      // Set current date as payment confirmation date
-      const currentDate = new Date();
-      const newListingExpiredDate = new Date(currentDate);
-      newListingExpiredDate.setDate(newListingExpiredDate.getDate() + 365);
-
-      let updateData: any = {
-        payment_status: 'confirmed',
-        receipt_url: null,
-        last_payment_date: currentDate.toISOString(),
-        listing_expired_date: newListingExpiredDate.toISOString().split('T')[0]
-      };
-
-      // If POS+Website is 1, also update odoo_expired_date
-      if (business["POS+Website"] === 1) {
-        const newOdooExpiredDate = new Date(currentDate);
-        newOdooExpiredDate.setDate(newOdooExpiredDate.getDate() + 30);
-        updateData.odoo_expired_date = newOdooExpiredDate.toISOString();
-      }
-
-      console.log('Updating business with data:', updateData);
-
-      const { data: updateResult, error } = await supabase
-        .from('businesses')
-        .update(updateData)
-        .eq('id', businessId)
-        .select('*');
+      // Call the secure admin function to confirm payment
+      const { data: result, error } = await supabase
+        .rpc('admin_confirm_business_payment', {
+          business_id: businessId,
+          pos_website_option: business["POS+Website"] || 0
+        });
 
       if (error) {
         console.error('Database update error:', error);
         throw error;
       }
 
-      console.log('Update successful, result:', updateResult);
+      console.log('Update successful, result:', result);
 
       // Remove the listing from local state immediately
       setListings(prev => prev.filter(listing => listing.id !== businessId));
@@ -129,7 +103,7 @@ export default function ToBeConfirmedListings() {
       console.error('Error confirming payment:', error);
       toast({
         title: "Error",
-        description: "Failed to confirm payment",
+        description: error instanceof Error ? error.message : "Failed to confirm payment",
         variant: "destructive",
       });
     }

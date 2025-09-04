@@ -293,6 +293,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_confirm_business_payment: {
+        Args: { business_id: string; pos_website_option: number }
+        Returns: Json
+      }
       check_admin_rate_limit: {
         Args: { user_email: string }
         Returns: boolean
