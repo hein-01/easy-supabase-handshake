@@ -73,7 +73,12 @@ export default function ToBeConfirmedListings() {
         .eq('id', businessId)
         .single();
 
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        console.error('Error fetching business details:', fetchError);
+        throw fetchError;
+      }
+
+      console.log('Business details fetched:', business);
 
       // Set current date as payment confirmation date
       const currentDate = new Date();
@@ -100,11 +105,14 @@ export default function ToBeConfirmedListings() {
         .from('businesses')
         .update(updateData)
         .eq('id', businessId)
-        .select('payment_status');
+        .select('*');
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database update error:', error);
+        throw error;
+      }
 
-      console.log('Update successful, new payment status:', updateResult);
+      console.log('Update successful, result:', updateResult);
 
       // Remove the listing from local state immediately
       setListings(prev => prev.filter(listing => listing.id !== businessId));
