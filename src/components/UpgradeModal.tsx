@@ -87,13 +87,13 @@ export default function UpgradeModal({ isOpen, onClose, businessId, businessName
 
       if (fetchError) throw fetchError;
 
-      setOdooExpiredDate(updatedBusiness.odoo_expired_date);
-      setSubmitted(true);
-
       toast({
         title: "Success",
         description: "Receipt uploaded successfully. Your upgrade request has been submitted for admin confirmation.",
       });
+
+      // Close the modal immediately after successful submission
+      onClose();
     } catch (error) {
       console.error('Error uploading receipt:', error);
       toast({
