@@ -3,8 +3,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { formatDateWithOrdinal } from "@/lib/dateUtils";
 
 interface UpgradeModalProps {
   isOpen: boolean;
@@ -17,6 +20,8 @@ export default function UpgradeModal({ isOpen, onClose, businessId, businessName
   const [totalAmount, setTotalAmount] = useState("");
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [odooExpiredDate, setOdooExpiredDate] = useState<string>("");
   const { toast } = useToast();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,14 +78,22 @@ export default function UpgradeModal({ isOpen, onClose, businessId, businessName
 
       if (updateError) throw updateError;
 
+      // Fetch the updated business to get the new odoo_expired_date
+      const { data: updatedBusiness, error: fetchError } = await supabase
+        .from('businesses')
+        .select('odoo_expired_date')
+        .eq('id', businessId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      setOdooExpiredDate(updatedBusiness.odoo_expired_date);
+      setSubmitted(true);
+
       toast({
         title: "Success",
         description: "Receipt uploaded successfully. Your upgrade request has been submitted for admin confirmation.",
       });
-
-      setTotalAmount("");
-      setReceiptFile(null);
-      onClose();
     } catch (error) {
       console.error('Error uploading receipt:', error);
       toast({
@@ -99,58 +112,94 @@ export default function UpgradeModal({ isOpen, onClose, businessId, businessName
         <DialogHeader>
           <DialogTitle>Upgrade Business Listing</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label className="text-sm font-medium">Business Name</Label>
-            <div className="mt-1 p-3 bg-muted rounded-md">
-              <p className="text-sm">{businessName}</p>
+{submitted ? (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium">Business Name</Label>
+              <div className="mt-1 p-3 bg-muted rounded-md">
+                <p className="text-sm">{businessName}</p>
+              </div>
+            </div>
+            
+            <Alert>
+              <CheckCircle className="h-4 w-4" />
+              <AlertTitle>Upgrade Request Submitted Successfully!</AlertTitle>
+              <AlertDescription>
+                Your upgrade request has been submitted for admin confirmation.
+              </AlertDescription>
+            </Alert>
+
+            {odooExpiredDate && (
+              <div>
+                <Label className="text-sm font-medium">POS+Website Access Valid Until</Label>
+                <div className="mt-1 p-3 bg-muted rounded-md">
+                  <p className="text-sm font-semibold text-primary">
+                    {formatDateWithOrdinal(odooExpiredDate)}
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            <div className="flex justify-end pt-4">
+              <Button onClick={onClose}>
+                Close
+              </Button>
             </div>
           </div>
-          
-          <div>
-            <Label htmlFor="totalAmount" className="text-sm font-medium">
-              Total Amount ($)
-            </Label>
-            <Input
-              id="totalAmount"
-              type="number"
-              step="0.01"
-              placeholder="Enter total amount"
-              value={totalAmount}
-              onChange={(e) => setTotalAmount(e.target.value)}
-              className="mt-1"
-              required
-            />
-          </div>
-          
-          <div>
-            <Label htmlFor="receipt" className="text-sm font-medium">
-              Upload Receipt
-            </Label>
-            <Input
-              id="receipt"
-              type="file"
-              accept="image/*,.pdf"
-              onChange={handleFileChange}
-              className="mt-1"
-              required
-            />
-            {receiptFile && (
-              <p className="text-sm text-muted-foreground mt-1">
-                Selected: {receiptFile.name}
-              </p>
-            )}
-          </div>
-          
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Uploading..." : "Submit Upgrade Request"}
-            </Button>
-          </div>
-        </form>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium">Business Name</Label>
+              <div className="mt-1 p-3 bg-muted rounded-md">
+                <p className="text-sm">{businessName}</p>
+              </div>
+            </div>
+            
+            <div>
+              <Label htmlFor="totalAmount" className="text-sm font-medium">
+                Total Amount ($)
+              </Label>
+              <Input
+                id="totalAmount"
+                type="number"
+                step="0.01"
+                placeholder="Enter total amount"
+                value={totalAmount}
+                onChange={(e) => setTotalAmount(e.target.value)}
+                className="mt-1"
+                required
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="receipt" className="text-sm font-medium">
+                Upload Receipt
+              </Label>
+              <Input
+                id="receipt"
+                type="file"
+                accept="image/*,.pdf"
+                onChange={handleFileChange}
+                className="mt-1"
+                required
+              />
+              {receiptFile && (
+                <p className="text-sm text-muted-foreground mt-1">
+                  Selected: {receiptFile.name}
+                </p>
+              )}
+            </div>
+            
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? "Uploading..." : "Submit Upgrade Request"}
+              </Button>
+            </div>
+          </form>
+        )}
       </DialogContent>
     </Dialog>
   );
