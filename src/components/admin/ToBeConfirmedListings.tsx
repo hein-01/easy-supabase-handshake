@@ -213,6 +213,54 @@ export default function ToBeConfirmedListings() {
 
   useEffect(() => {
     fetchPendingListings();
+
+    // Subscribe to real-time updates for businesses table
+    const channel = supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'businesses'
+        },
+        (payload) => {
+          console.log('Real-time update received:', payload);
+          
+          if (payload.eventType === 'UPDATE') {
+            const updatedBusiness = payload.new as Business;
+            
+            // Update the listing in state if it exists and has to_be_confirmed status
+            if (updatedBusiness.payment_status === 'to_be_confirmed') {
+              setListings(prev => prev.map(listing => 
+                listing.id === updatedBusiness.id 
+                  ? { ...listing, ...updatedBusiness }
+                  : listing
+              ));
+            } else {
+              // Remove from list if payment status changed from to_be_confirmed
+              setListings(prev => prev.filter(listing => listing.id !== updatedBusiness.id));
+            }
+          } else if (payload.eventType === 'INSERT') {
+            const newBusiness = payload.new as Business;
+            
+            // Add to list if it has to_be_confirmed status
+            if (newBusiness.payment_status === 'to_be_confirmed') {
+              setListings(prev => [...prev, newBusiness]);
+            }
+          } else if (payload.eventType === 'DELETE') {
+            const deletedBusiness = payload.old as Business;
+            
+            // Remove from list
+            setListings(prev => prev.filter(listing => listing.id !== deletedBusiness.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   if (loading) {
