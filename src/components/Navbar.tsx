@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import { Building2, Smartphone, ChevronDown, Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Building2, Smartphone, ChevronDown } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
@@ -14,12 +14,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import AuthModal from "./AuthModal";
 
 export const Navbar = () => {
   const { user, profile, signOut } = useAuth();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   
   const buttonTexts = [
@@ -122,6 +122,11 @@ export const Navbar = () => {
                 $10/month
               </Badge>
             </div>
+
+            {/* Dashboard Sidebar Trigger - Only show on dashboard */}
+            {location.pathname === '/dashboard' && (
+              <SidebarTrigger className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors" />
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -155,36 +160,10 @@ export const Navbar = () => {
               </Badge>
             </div>
             
-            {/* Mobile Menu Button */}
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0"
-                >
-                  <Menu className="h-4 w-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[280px]">
-                <div className="flex flex-col space-y-4 mt-8">
-                  <Link
-                    to="/find-shops"
-                    className="text-lg font-medium text-foreground hover:text-primary"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    🏪 Find Shops
-                  </Link>
-                  
-                  <div className="border-t border-border pt-4">
-                    <Button variant="ghost" size="sm" className="w-full justify-start mb-2">
-                      <Smartphone className="h-4 w-4 mr-2" />
-                      <span>Get App</span>
-                    </Button>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+            {/* Dashboard Sidebar Trigger for Mobile - Only show on dashboard */}
+            {location.pathname === '/dashboard' && (
+              <SidebarTrigger className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors" />
+            )}
           </div>
         </div>
       </div>

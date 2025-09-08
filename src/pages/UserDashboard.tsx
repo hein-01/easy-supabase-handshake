@@ -740,7 +740,6 @@ export default function UserDashboard() {
               <div className="absolute inset-0 bg-gradient-to-r from-dashboard-gradient-start to-dashboard-gradient-end rounded-2xl opacity-10"></div>
               <div className="relative flex items-center justify-between p-6 rounded-2xl bg-dashboard-card-bg/50 backdrop-blur-sm border border-white/20 shadow-lg">
                 <div className="flex items-center gap-4">
-                  <SidebarTrigger className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors" />
                   <div>
                     <h1 className="text-2xl font-bold bg-gradient-to-r from-dashboard-gradient-start to-dashboard-gradient-end bg-clip-text text-transparent">
                       Welcome back, {profile?.display_name || "User"}!
