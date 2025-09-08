@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link, useLocation } from "react-router-dom";
-import { Building2, Smartphone, ChevronDown } from "lucide-react";
+import { Building2, Smartphone, ChevronDown, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
@@ -14,7 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import AuthModal from "./AuthModal";
 
 export const Navbar = () => {
@@ -125,7 +124,20 @@ export const Navbar = () => {
 
             {/* Dashboard Sidebar Trigger - Only show on dashboard */}
             {location.pathname === '/dashboard' && (
-              <SidebarTrigger className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors" />
+              <Button 
+                onClick={() => {
+                  // Find and click the actual sidebar trigger in the dashboard
+                  const sidebarTrigger = document.querySelector('[data-sidebar="trigger"]');
+                  if (sidebarTrigger) {
+                    (sidebarTrigger as HTMLElement).click();
+                  }
+                }}
+                size="sm"
+                variant="ghost"
+                className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+              >
+                <Menu className="h-4 w-4" />
+              </Button>
             )}
           </div>
 
@@ -162,7 +174,20 @@ export const Navbar = () => {
             
             {/* Dashboard Sidebar Trigger for Mobile - Only show on dashboard */}
             {location.pathname === '/dashboard' && (
-              <SidebarTrigger className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors" />
+              <Button 
+                onClick={() => {
+                  // Find and click the actual sidebar trigger in the dashboard
+                  const sidebarTrigger = document.querySelector('[data-sidebar="trigger"]');
+                  if (sidebarTrigger) {
+                    (sidebarTrigger as HTMLElement).click();
+                  }
+                }}
+                size="sm"
+                variant="ghost"
+                className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
+              >
+                <Menu className="h-4 w-4" />
+              </Button>
             )}
           </div>
         </div>
