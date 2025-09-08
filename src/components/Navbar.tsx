@@ -125,48 +125,7 @@ export const Navbar = () => {
           </div>
 
           {/* Mobile Menu */}
-          <div className="md:hidden flex items-center space-x-2">
-            {/* Mobile Auth Button */}
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="default" size="sm" className="flex items-center space-x-1">
-                    <span>Dashboard</span>
-                    <ChevronDown className="h-3 w-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link to="/dashboard" className="w-full">
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/dashboard" onClick={() => {/* Navigate to wishlists section */}} className="w-full">
-                      Wishlists
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/list-&-get-pos-website" className="w-full">
-                      Get Website + POS
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={signOut} className="cursor-pointer">
-                    Sign out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-xs"
-                onClick={() => setAuthModalOpen(true)}
-              >
-                Sign in
-              </Button>
-            )}
-            
+          <div className="md:hidden flex items-center">
             {/* Mobile Menu Button */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
