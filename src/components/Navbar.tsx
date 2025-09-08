@@ -125,7 +125,36 @@ export const Navbar = () => {
           </div>
 
           {/* Mobile Menu */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center space-x-2">
+            {/* Mobile CTA Button - Always Visible */}
+            <div className="relative">
+              <Link to="/list-&-get-pos-website" className="bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-2 rounded-lg font-medium h-9 flex items-center overflow-hidden">
+                <Swiper
+                  direction="vertical"
+                  spaceBetween={0}
+                  slidesPerView={1}
+                  autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                  }}
+                  loop={true}
+                  className="h-5 w-full"
+                  modules={[Autoplay]}
+                >
+                  {buttonTexts.map((text, index) => (
+                    <SwiperSlide key={index} className="h-5 flex items-center">
+                      <span className="text-xs font-medium text-center w-full">
+                        {text}
+                      </span>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </Link>
+              <Badge className="absolute -top-1 -right-1 bg-yellow-400 text-black text-xs px-1 py-0">
+                $10
+              </Badge>
+            </div>
+            
             {/* Mobile Menu Button */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
@@ -152,34 +181,6 @@ export const Navbar = () => {
                       <Smartphone className="h-4 w-4 mr-2" />
                       <span>Get App</span>
                     </Button>
-                    
-                    <div className="relative">
-                      <Link to="/list-&-get-pos-website" onClick={() => setIsMobileMenuOpen(false)} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 flex items-center px-4 rounded-lg overflow-hidden">
-                        <Swiper
-                          direction="vertical"
-                          spaceBetween={0}
-                          slidesPerView={1}
-                          autoplay={{
-                            delay: 2500,
-                            disableOnInteraction: false,
-                          }}
-                          loop={true}
-                          className="h-6 w-full"
-                          modules={[Autoplay]}
-                        >
-                          {buttonTexts.map((text, index) => (
-                            <SwiperSlide key={index} className="h-6 flex items-center">
-                              <span className="text-sm font-medium text-center w-full">
-                                {text}
-                              </span>
-                            </SwiperSlide>
-                          ))}
-                        </Swiper>
-                      </Link>
-                      <Badge className="absolute -top-2 -right-1 bg-yellow-400 text-black text-xs px-2 py-0">
-                        $10/month
-                      </Badge>
-                    </div>
                   </div>
                 </div>
               </SheetContent>
