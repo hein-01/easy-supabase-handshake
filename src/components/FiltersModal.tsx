@@ -69,24 +69,36 @@ export const FiltersModal = ({
 
         <div className="space-y-0 py-4">
           {/* Category */}
-          <div className="flex items-center justify-between py-4">
-            <Label className="text-sm font-medium text-gray-700 w-1/3">
+          <div className="space-y-4 py-4">
+            <Label className="text-sm font-medium text-gray-700">
               Category
             </Label>
-            <div className="w-2/3">
-              <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="border-gray-200 focus:border-purple-500">
-                  <SelectValue placeholder="All Categories" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setCategory("all")}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm ${
+                  category === "all"
+                    ? "bg-blue-100 text-blue-700 shadow-md"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                }`}
+              >
+                Any
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setCategory(cat)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm ${
+                    category === cat
+                      ? "bg-blue-100 text-blue-700 shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
         </div>
