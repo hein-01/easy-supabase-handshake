@@ -21,9 +21,11 @@ interface FiltersModalProps {
   onSearchChange: (search: string) => void;
   onCategoryChange: (category: string) => void;
   onLocationChange: (location: string) => void;
+  onProductChange?: (product: string) => void;
   categories: string[];
   initialSearchTerm?: string;
   initialCategory?: string;
+  initialProduct?: string;
   children: React.ReactNode;
 }
 
@@ -31,23 +33,54 @@ export const FiltersModal = ({
   onSearchChange,
   onCategoryChange,
   onLocationChange,
+  onProductChange,
   categories,
   initialSearchTerm = "",
   initialCategory = "all",
+  initialProduct = "all",
   children,
 }: FiltersModalProps) => {
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState(initialCategory);
+  const [product, setProduct] = useState(initialProduct);
 
+  // Category to products mapping
+  const categoryProducts: Record<string, string[]> = {
+    "all": ["All Products"],
+    "Restaurant": ["Fast Food", "Fine Dining", "Takeaway", "Delivery"],
+    "Retail": ["Clothing", "Electronics", "Home & Garden", "Books"],
+    "Service": ["Consultation", "Repair", "Maintenance", "Installation"],
+    "Healthcare": ["Check-up", "Treatment", "Prescription", "Emergency"],
+    "Beauty": ["Haircut", "Manicure", "Facial", "Massage"],
+    "Automotive": ["Car Wash", "Oil Change", "Tire Service", "Repair"],
+    "Entertainment": ["Movies", "Games", "Events", "Sports"],
+    "Education": ["Courses", "Tutoring", "Training", "Workshops"],
+    "Technology": ["Software", "Hardware", "Support", "Development"],
+    "Finance": ["Banking", "Insurance", "Investment", "Loans"],
+  };
+
+  const currentProducts = categoryProducts[category] || ["All Products"];
+
+  useEffect(() => {
+    // Reset product selection when category changes
+    if (category === "all") {
+      setProduct("all");
+    } else if (currentProducts.length > 0) {
+      setProduct(currentProducts[0]);
+    }
+  }, [category]);
 
   const handleSearch = () => {
     onCategoryChange(category);
+    onProductChange?.(product);
     setOpen(false);
   };
 
   const handleReset = () => {
     setCategory("all");
+    setProduct("all");
     onCategoryChange("all");
+    onProductChange?.("all");
   };
 
   return (
@@ -73,7 +106,8 @@ export const FiltersModal = ({
         </DialogHeader>
 
         <div className="flex flex-col min-h-0 overflow-hidden">
-          <div className="py-4 px-1">
+          <div className="py-4 px-1 space-y-6">
+            {/* Category Section */}
             <div className="space-y-4">
               <Label className="text-sm font-medium text-gray-700">
                 Category
@@ -112,6 +146,40 @@ export const FiltersModal = ({
                           }`}
                         >
                           {cat}
+                        </button>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+              </div>
+            </div>
+
+            {/* Products Section */}
+            <div className="space-y-4">
+              <Label className="text-sm font-medium text-gray-700">
+                Products
+              </Label>
+              <div className="w-full overflow-hidden">
+                <Carousel
+                  opts={{
+                    align: "start",
+                    dragFree: true,
+                  }}
+                  className="w-full"
+                >
+                  <CarouselContent className="-ml-2">
+                    {currentProducts.map((prod) => (
+                      <CarouselItem key={prod} className="pl-2 basis-auto">
+                        <button
+                          type="button"
+                          onClick={() => setProduct(prod)}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm whitespace-nowrap ${
+                            product === prod
+                              ? "bg-blue-100 text-blue-700 shadow-md"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                          }`}
+                        >
+                          {prod}
                         </button>
                       </CarouselItem>
                     ))}
