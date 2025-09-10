@@ -32,32 +32,17 @@ export const FiltersModal = ({
   children,
 }: FiltersModalProps) => {
   const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState(initialSearchTerm);
   const [category, setCategory] = useState(initialCategory);
-  const [location, setLocation] = useState("");
-  const [priceRange, setPriceRange] = useState("all");
-  const [rating, setRating] = useState("all");
 
-  useEffect(() => {
-    setSearch(initialSearchTerm);
-  }, [initialSearchTerm]);
 
   const handleSearch = () => {
-    onSearchChange(search);
     onCategoryChange(category);
-    onLocationChange(location);
     setOpen(false);
   };
 
   const handleReset = () => {
-    setSearch("");
     setCategory("all");
-    setLocation("");
-    setPriceRange("all");
-    setRating("all");
-    onSearchChange("");
     onCategoryChange("all");
-    onLocationChange("");
   };
 
   return (
@@ -83,23 +68,8 @@ export const FiltersModal = ({
         </DialogHeader>
 
         <div className="space-y-0 py-4">
-          {/* Business Name */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-100">
-            <Label className="text-sm font-medium text-gray-700 w-1/3">
-              Business Name
-            </Label>
-            <div className="w-2/3">
-              <Input
-                placeholder="Search businesses..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="border-gray-200 focus:border-purple-500 focus-visible:ring-purple-500/20"
-              />
-            </div>
-          </div>
-
           {/* Category */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-100">
+          <div className="flex items-center justify-between py-4">
             <Label className="text-sm font-medium text-gray-700 w-1/3">
               Category
             </Label>
@@ -115,63 +85,6 @@ export const FiltersModal = ({
                       {cat}
                     </SelectItem>
                   ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Location */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-100">
-            <Label className="text-sm font-medium text-gray-700 w-1/3">
-              Location
-            </Label>
-            <div className="w-2/3">
-              <Input
-                placeholder="City, State..."
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="border-gray-200 focus:border-purple-500 focus-visible:ring-purple-500/20"
-              />
-            </div>
-          </div>
-
-          {/* Price Range */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-100">
-            <Label className="text-sm font-medium text-gray-700 w-1/3">
-              Price Range
-            </Label>
-            <div className="w-2/3">
-              <Select value={priceRange} onValueChange={setPriceRange}>
-                <SelectTrigger className="border-gray-200 focus:border-purple-500">
-                  <SelectValue placeholder="All Prices" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Prices</SelectItem>
-                  <SelectItem value="$">$ - Budget Friendly</SelectItem>
-                  <SelectItem value="$$">$$ - Moderate</SelectItem>
-                  <SelectItem value="$$$">$$$ - Expensive</SelectItem>
-                  <SelectItem value="$$$$">$$$$ - Very Expensive</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Rating */}
-          <div className="flex items-center justify-between py-4">
-            <Label className="text-sm font-medium text-gray-700 w-1/3">
-              Rating
-            </Label>
-            <div className="w-2/3">
-              <Select value={rating} onValueChange={setRating}>
-                <SelectTrigger className="border-gray-200 focus:border-purple-500">
-                  <SelectValue placeholder="All Ratings" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Ratings</SelectItem>
-                  <SelectItem value="4+">4+ Stars</SelectItem>
-                  <SelectItem value="3+">3+ Stars</SelectItem>
-                  <SelectItem value="2+">2+ Stars</SelectItem>
-                  <SelectItem value="1+">1+ Stars</SelectItem>
                 </SelectContent>
               </Select>
             </div>
