@@ -55,7 +55,7 @@ export const FiltersModal = ({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-white rounded-lg shadow-2xl border-0">
+      <DialogContent className="sm:max-w-md bg-white rounded-lg shadow-2xl border-0 max-h-[90vh] overflow-hidden">
         <DialogHeader className="pb-4 border-b border-gray-100">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-bold text-foreground">
@@ -72,69 +72,72 @@ export const FiltersModal = ({
           </div>
         </DialogHeader>
 
-        <div className="space-y-0 py-4">
-          {/* Category */}
-          <div className="space-y-4 py-4">
-            <Label className="text-sm font-medium text-gray-700">
-              Category
-            </Label>
-            <Carousel
-              opts={{
-                align: "start",
-                dragFree: true,
-              }}
-              className="w-full"
-            >
-              <CarouselContent className="-ml-2">
-                <CarouselItem className="pl-2 basis-auto">
-                  <button
-                    type="button"
-                    onClick={() => setCategory("all")}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm whitespace-nowrap ${
-                      category === "all"
-                        ? "bg-blue-100 text-blue-700 shadow-md"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
-                    }`}
-                  >
-                    Any
-                  </button>
-                </CarouselItem>
-                {categories.map((cat) => (
-                  <CarouselItem key={cat} className="pl-2 basis-auto">
-                    <button
-                      type="button"
-                      onClick={() => setCategory(cat)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm whitespace-nowrap ${
-                        category === cat
-                          ? "bg-blue-100 text-blue-700 shadow-md"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-            </Carousel>
+        <div className="flex flex-col min-h-0 overflow-hidden">
+          <div className="py-4 px-1">
+            <div className="space-y-4">
+              <Label className="text-sm font-medium text-gray-700">
+                Category
+              </Label>
+              <div className="w-full overflow-hidden">
+                <Carousel
+                  opts={{
+                    align: "start",
+                    dragFree: true,
+                  }}
+                  className="w-full"
+                >
+                  <CarouselContent className="-ml-2">
+                    <CarouselItem className="pl-2 basis-auto">
+                      <button
+                        type="button"
+                        onClick={() => setCategory("all")}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm whitespace-nowrap ${
+                          category === "all"
+                            ? "bg-blue-100 text-blue-700 shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                        }`}
+                      >
+                        Any
+                      </button>
+                    </CarouselItem>
+                    {categories.map((cat) => (
+                      <CarouselItem key={cat} className="pl-2 basis-auto">
+                        <button
+                          type="button"
+                          onClick={() => setCategory(cat)}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm whitespace-nowrap ${
+                            category === cat
+                              ? "bg-blue-100 text-blue-700 shadow-md"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div className="flex gap-3 pt-4 border-t border-gray-100">
-          <Button
-            type="button"
-            variant="outline"
-            className="flex-1 border-gray-200 hover:bg-gray-50"
-            onClick={handleReset}
-          >
-            Reset
-          </Button>
-          <Button
-            type="button"
-            className="flex-1 bg-primary hover:bg-primary/90"
-            onClick={handleSearch}
-          >
-            Search
-          </Button>
+          <div className="flex gap-3 pt-4 border-t border-gray-100 px-1">
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1 border-gray-200 hover:bg-gray-50"
+              onClick={handleReset}
+            >
+              Reset
+            </Button>
+            <Button
+              type="button"
+              className="flex-1 bg-primary hover:bg-primary/90"
+              onClick={handleSearch}
+            >
+              Search
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
