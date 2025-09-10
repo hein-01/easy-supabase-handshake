@@ -11,6 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 interface FiltersModalProps {
   onSearchChange: (search: string) => void;
@@ -73,33 +78,44 @@ export const FiltersModal = ({
             <Label className="text-sm font-medium text-gray-700">
               Category
             </Label>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => setCategory("all")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm ${
-                  category === "all"
-                    ? "bg-blue-100 text-blue-700 shadow-md"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
-                }`}
-              >
-                Any
-              </button>
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setCategory(cat)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm ${
-                    category === cat
-                      ? "bg-blue-100 text-blue-700 shadow-md"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
+            <Carousel
+              opts={{
+                align: "start",
+                dragFree: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-2">
+                <CarouselItem className="pl-2 basis-auto">
+                  <button
+                    type="button"
+                    onClick={() => setCategory("all")}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm whitespace-nowrap ${
+                      category === "all"
+                        ? "bg-blue-100 text-blue-700 shadow-md"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                    }`}
+                  >
+                    Any
+                  </button>
+                </CarouselItem>
+                {categories.map((cat) => (
+                  <CarouselItem key={cat} className="pl-2 basis-auto">
+                    <button
+                      type="button"
+                      onClick={() => setCategory(cat)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm whitespace-nowrap ${
+                        category === cat
+                          ? "bg-blue-100 text-blue-700 shadow-md"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200 shadow-sm"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           </div>
         </div>
 
