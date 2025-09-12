@@ -36,6 +36,7 @@ export default function FindShops() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [locationFilter, setLocationFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -58,7 +59,7 @@ export default function FindShops() {
     setHasMore(true);
     // Always fetch businesses - either with filters or show all
     fetchBusinesses(true);
-  }, [searchTerm, selectedCategory, locationFilter]);
+  }, [searchTerm, selectedCategory, selectedProducts, locationFilter]);
 
   const fetchCategories = async () => {
     try {
@@ -105,20 +106,26 @@ export default function FindShops() {
         query = query.eq("category", normalizedCategory);
       }
 
+      // Apply product filter
+      if (selectedProducts.length > 0 && !selectedProducts.includes("All Products")) {
+        const productQuery = selectedProducts
+          .map(product => `products_catalog.ilike.%${product}%`)
+          .join(',');
+        query = query.or(productQuery);
+      }
+
       // Apply location filter
       if (locationFilter) {
-        if (locationFilter) {
-          if (locationFilter.includes(",")) {
-            const [town, province] = locationFilter.split(",").map((s) => s.trim());
-            if (town) {
-              query = query.ilike("towns", `%${town}%`);
-            }
-            if (province) {
-              query = query.ilike("province_district", `%${province}%`);
-            }
-          } else {
-            query = query.or(`towns.ilike.%${locationFilter}%,province_district.ilike.%${locationFilter}%`);
+        if (locationFilter.includes(",")) {
+          const [town, province] = locationFilter.split(",").map((s) => s.trim());
+          if (town) {
+            query = query.ilike("towns", `%${town}%`);
           }
+          if (province) {
+            query = query.ilike("province_district", `%${province}%`);
+          }
+        } else {
+          query = query.or(`towns.ilike.%${locationFilter}%,province_district.ilike.%${locationFilter}%`);
         }
       }
 
@@ -180,6 +187,13 @@ export default function FindShops() {
           onSearchChange={setSearchTerm}
           onCategoryChange={setSelectedCategory}
           onLocationChange={setLocationFilter}
+          onProductChange={(products) => {
+            if (typeof products === 'string') {
+              setSelectedProducts(products === 'all' ? [] : [products]);
+            } else {
+              setSelectedProducts(products);
+            }
+          }}
           onDeliveryFilter={(type) => {
             // Handle delivery filter logic here
             console.log("Delivery filter:", type);

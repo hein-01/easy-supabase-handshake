@@ -10,6 +10,7 @@ interface SearchFiltersProps {
   onSearchChange: (search: string) => void;
   onCategoryChange: (category: string) => void;
   onLocationChange: (location: string) => void;
+  onProductChange?: (products: string[] | string) => void;
   onDeliveryFilter?: (type: string) => void;
   categories: string[];
   initialSearchTerm?: string;
@@ -20,6 +21,7 @@ export const SearchFilters = ({
   onSearchChange,
   onCategoryChange,
   onLocationChange,
+  onProductChange,
   onDeliveryFilter,
   categories,
   initialSearchTerm = "",
@@ -73,6 +75,7 @@ export const SearchFilters = ({
               onSearchChange={onSearchChange}
               onCategoryChange={onCategoryChange}
               onLocationChange={onLocationChange}
+              onProductChange={onProductChange}
               categories={categories}
               initialSearchTerm={initialSearchTerm}
               initialCategory={initialCategory}
