@@ -31,7 +31,8 @@ interface Business {
 export default function FindShops() {
   const [searchParams] = useSearchParams();
   const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
+  const [categoryNames, setCategoryNames] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,11 +66,13 @@ export default function FindShops() {
     try {
       const { data, error } = await supabase
         .from("business_categories")
-        .select("name")
+        .select("id, name")
         .order("name");
 
       if (error) throw error;
-      setCategories(data?.map((cat: { name: string }) => cat.name) || []);
+      const categoriesData = data || [];
+      setCategories(categoriesData);
+      setCategoryNames(categoriesData.map(cat => cat.name));
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -100,10 +103,12 @@ export default function FindShops() {
         query = query.or(searchQuery);
       }
 
-      // Apply category filter with normalization
+      // Apply category filter with ID mapping
       if (selectedCategory !== "all") {
-        const normalizedCategory = normalizeCategoryName(selectedCategory);
-        query = query.eq("category", normalizedCategory);
+        const categoryData = categories.find(cat => cat.name === selectedCategory);
+        if (categoryData) {
+          query = query.eq("category", categoryData.id);
+        }
       }
 
       // Apply product filter
@@ -198,7 +203,7 @@ export default function FindShops() {
             // Handle delivery filter logic here
             console.log("Delivery filter:", type);
           }}
-          categories={categories}
+          categories={categoryNames}
           initialSearchTerm={searchTerm}
           initialCategory={selectedCategory}
         />
