@@ -94,13 +94,29 @@ export default function FindShops() {
         .order("rating", { ascending: false })
         .range(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE - 1);
 
-      // Apply enhanced search filter with synonyms
+      // Apply enhanced search filter with phrase prioritization
       if (searchTerm) {
-        const expandedTerms = expandSearchTerms(searchTerm);
-        const searchQuery = expandedTerms
-          .map(term => `name.ilike.%${term}%,description.ilike.%${term}%,products_catalog.ilike.%${term}%`)
-          .join(',');
-        query = query.or(searchQuery);
+        // First try to find exact phrase matches
+        const phraseQuery = `name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,products_catalog.ilike.%${searchTerm}%`;
+        
+        // Check if phrase matches exist
+        const phraseResult = await supabase
+          .from("businesses")
+          .select("id")
+          .or(phraseQuery)
+          .limit(1);
+        
+        if (phraseResult.data && phraseResult.data.length > 0) {
+          // If phrase matches found, use phrase search
+          query = query.or(phraseQuery);
+        } else {
+          // If no phrase matches, fall back to expanded terms search
+          const expandedTerms = expandSearchTerms(searchTerm);
+          const searchQuery = expandedTerms
+            .map(term => `name.ilike.%${term}%,description.ilike.%${term}%,products_catalog.ilike.%${term}%`)
+            .join(',');
+          query = query.or(searchQuery);
+        }
       }
 
       // Apply category filter with ID mapping
