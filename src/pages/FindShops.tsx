@@ -107,7 +107,7 @@ export default function FindShops() {
       if (selectedCategory !== "all") {
         const categoryData = categories.find(cat => cat.name === selectedCategory);
         if (categoryData) {
-          query = query.eq("category", categoryData.id);
+          query = query.like("category", `%${categoryData.id}%`);
         }
       }
 
