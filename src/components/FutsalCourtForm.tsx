@@ -263,8 +263,11 @@ export const FutsalCourtForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* 1. Business Basic Information */}
-        <Card>
-          <CardContent className="pt-6">
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <CardTitle className="text-xl">Business Information</CardTitle>
+          </CardHeader>
+          <CardContent>
             <FormField
               control={form.control}
               name="businessName"
@@ -282,8 +285,11 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 2. Field Configuration */}
-        <Card>
-          <CardContent className="space-y-4 pt-6">
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <CardTitle className="text-xl">Field Configuration</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <FormField
               control={form.control}
               name="numberOfFields"
@@ -346,8 +352,11 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 3. Operating Hours */}
-        <Card>
-          <CardContent className="space-y-4 pt-6">
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <CardTitle className="text-xl">Operating Hours</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground mb-4">
               Please provide your business's opening and closing hours. If your business is closed on a particular day (e.g., Sunday), you may check the 'Close' checkbox for that day.
             </p>
@@ -405,9 +414,9 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 4. Payment Methods */}
-        <Card>
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
           <CardHeader>
-            <CardTitle>Payment Methods for Bookings</CardTitle>
+            <CardTitle className="text-xl">Payment Methods for Bookings</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground mb-4">
@@ -558,9 +567,9 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 5. Facilities */}
-        <Card>
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
           <CardHeader>
-            <CardTitle>Facilities</CardTitle>
+            <CardTitle className="text-xl">Available Facilities & Services</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
@@ -595,9 +604,9 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 6. Player Rules */}
-        <Card>
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
           <CardHeader>
-            <CardTitle>Player Rules</CardTitle>
+            <CardTitle className="text-xl">Rules & Policies</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-6">
@@ -682,8 +691,11 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 7. Business Description */}
-        <Card>
-          <CardContent className="pt-6">
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <CardTitle className="text-xl">Business Description</CardTitle>
+          </CardHeader>
+          <CardContent>
             <FormField
               control={form.control}
               name="description"
@@ -705,9 +717,9 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 8. Upload Images */}
-        <Card>
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
           <CardHeader>
-            <CardTitle>Upload Images</CardTitle>
+            <CardTitle className="text-xl">Upload Images</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-sm text-muted-foreground">
@@ -761,8 +773,11 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 9. Contact Information */}
-        <Card>
-          <CardContent className="space-y-6 pt-6">
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <CardTitle className="text-xl">Contact Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
             <FormField
               control={form.control}
               name="phoneNumber"
@@ -884,8 +899,11 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 10. Location Information */}
-        <Card>
-          <CardContent className="space-y-4 pt-6">
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <CardTitle className="text-xl">Location Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <FormField
               control={form.control}
               name="streetAddress"
@@ -962,8 +980,11 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 11. Online Presence */}
-        <Card>
-          <CardContent className="space-y-4 pt-6">
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <CardTitle className="text-xl">Social Media & Online Presence</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <FormField
               control={form.control}
               name="facebook"
@@ -1009,9 +1030,9 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 12. Listing Validity & POS Lite System */}
-        <Card>
+        <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
           <CardHeader>
-            <CardTitle>Listing Validity & POS Lite System</CardTitle>
+            <CardTitle className="text-xl">POS Lite System</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4 text-sm text-muted-foreground">
@@ -1063,9 +1084,9 @@ export const FutsalCourtForm = () => {
         </Card>
 
         {/* 14. Payment Options */}
-        <Card>
+        <Card className="border-2 shadow-lg">
           <CardHeader>
-            <CardTitle>Payment Options</CardTitle>
+            <CardTitle className="text-2xl">Payment Options</CardTitle>
             <p className="text-sm text-muted-foreground mt-2">
               The total is $1000. Kindly choose one of the following digital payment methods.
             </p>
@@ -1178,7 +1199,7 @@ export const FutsalCourtForm = () => {
         <Button
           type="submit"
           size="lg"
-          className="w-full"
+          className="w-full shadow-lg hover:shadow-xl transition-all"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Creating Listing..." : "List My Service"}
