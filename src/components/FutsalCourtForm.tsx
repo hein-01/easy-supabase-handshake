@@ -760,7 +760,7 @@ export const FutsalCourtForm = () => {
                   id="image-upload"
                 />
                 <Label htmlFor="image-upload">
-                  <div className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors">
+                  <div className="border-2 border-dashed border-primary/50 rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-colors">
                     <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
                     <p className="text-sm text-muted-foreground">
                       Click to upload images
@@ -1182,7 +1182,7 @@ export const FutsalCourtForm = () => {
                     type="file"
                     accept="image/*,.pdf"
                     onChange={handleReceiptUpload}
-                    className="mt-2"
+                    className="mt-2 file:bg-primary file:text-primary-foreground file:border-0 file:rounded file:px-4 file:py-2 file:mr-4 hover:file:bg-primary/90 file:cursor-pointer"
                   />
                   {receiptFile && (
                     <p className="text-sm text-muted-foreground mt-2">

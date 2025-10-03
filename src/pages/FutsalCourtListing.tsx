@@ -15,9 +15,6 @@ export default function FutsalCourtListing() {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Fill in the details below to list your futsal court rental service
           </p>
-          <p className="text-sm text-muted-foreground max-w-2xl mx-auto mt-4 italic">
-            This facility list is compiled based on today's global industry standards and data from similar field rental businesses: Please check only the items that your business currently offers.
-          </p>
         </div>
 
         <FutsalCourtForm />
