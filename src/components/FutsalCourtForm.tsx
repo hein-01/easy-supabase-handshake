@@ -1182,7 +1182,7 @@ export const FutsalCourtForm = () => {
                     type="file"
                     accept="image/*,.pdf"
                     onChange={handleReceiptUpload}
-                    className="mt-2 file:bg-primary file:text-primary-foreground file:border-0 file:rounded file:px-4 file:py-2 file:mr-4 hover:file:bg-primary/90 file:cursor-pointer"
+                    className="mt-2 file:bg-primary file:text-primary-foreground file:border-0 file:rounded file:px-4 file:py-2 file:mr-4 hover:file:bg-primary/90 file:cursor-pointer flex items-center"
                   />
                   {receiptFile && (
                     <p className="text-sm text-muted-foreground mt-2">
